@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /n-k-v-resume-old.pdf
+
+Sitemap: https://nitinkumarvasdhani.vercel.app/sitemap.xml
