@@ -1,84 +1,115 @@
-import { Briefcase, Calendar } from 'lucide-react';
+import { Building2, MapPin } from 'lucide-react';
+import { experience, otherProducts, products } from '../data';
+import Tilt, { SectionHeading } from './Tilt';
 
 export default function Experience() {
-  const experiences = [
-    {
-      title: 'Backend Developer',
-      company: 'SAER Technologies',
-      period: '2024 – Present',
-      responsibilities: [
-        'Built REST APIs for scalable web applications',
-        'Improved response time by 20% through optimization',
-        'Integrated MongoDB & MySQL databases',
-        'Code reviews and team collaboration',
-      ],
-    },
-    {
-      title: 'AI/ML Chatbot Developer',
-      company: 'IBM SkillBuild',
-      period: '2024',
-      responsibilities: [
-        'Developed machine learning models for chatbot intelligence',
-        'Implemented chatbot development frameworks',
-        'Enhanced user interaction through AI capabilities',
-      ],
-    },
-    {
-      title: 'Full Stack Developer Intern',
-      company: 'SAER Technologies',
-      period: '2023',
-      responsibilities: [
-        'Built React pages with 15% faster load times',
-        'Improved Laravel API performance',
-        'Collaborated on full-stack web applications',
-      ],
-    },
-  ];
-
   return (
-    <section id="experience" className="py-24 bg-gradient-to-br from-[#B6771D]/10 to-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl text-[#7B542F] mb-4">Work Experience</h2>
-          <div className="w-24 h-1 bg-[#FF9D00] mx-auto rounded-full"></div>
-        </div>
+    <section id="experience" className="section">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          kicker="03 / Experience"
+          title="Where I've shipped"
+          sub="Intern to Backend Developer in just over a year, working on live SaaS products used by real businesses."
+        />
 
-        <div className="max-w-4xl mx-auto relative">
-          {/* Timeline Line */}
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-[#B6771D] hidden md:block"></div>
-
-          <div className="space-y-12">
-            {experiences.map((exp, index) => (
-              <div key={index} className="relative">
-                {/* Timeline Dot */}
-                <div className="absolute left-8 -translate-x-1/2 w-6 h-6 bg-[#FF9D00] rounded-full border-4 border-white shadow-lg hidden md:block"></div>
-
-                {/* Content Card */}
-                <div className="md:ml-20 bg-[#FFCF71]/30 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-1">
-                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 gap-2">
-                    <div>
-                      <h3 className="text-2xl text-[#7B542F] mb-1">{exp.title}</h3>
-                      <div className="flex items-center gap-2 text-[#B6771D]">
-                        <Briefcase size={18} />
-                        <span className="text-lg">{exp.company}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600 bg-white px-4 py-2 rounded-full w-fit">
-                      <Calendar size={18} />
-                      <span>{exp.period}</span>
-                    </div>
-                  </div>
-                  <ul className="space-y-2">
-                    {exp.responsibilities.map((resp, respIndex) => (
-                      <li key={respIndex} className="flex items-start gap-3 text-gray-700">
-                        <span className="text-[#FF9D00] mt-1">▪</span>
-                        <span>{resp}</span>
-                      </li>
-                    ))}
-                  </ul>
+        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Company + promotion ladder */}
+          <div data-reveal>
+            <Tilt className="card h-full p-7" max={6}>
+              <div className="flex items-start gap-4" style={{ transform: 'translateZ(30px)' }}>
+                <div className="icon-tile">
+                  <Building2 size={22} />
+                </div>
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-white">{experience.company}</h3>
+                  <p className="mt-1 flex items-center gap-1.5 text-sm text-muted">
+                    <MapPin size={14} /> {experience.location} · {experience.period}
+                  </p>
                 </div>
               </div>
+
+              <ol className="ladder mt-8">
+                {experience.ladder.map((step, i) => (
+                  <li key={step.title} className={i === 0 ? 'is-current' : ''}>
+                    <p className="font-display text-lg font-semibold text-white">{step.title}</p>
+                    <p className="font-mono text-xs text-muted">{step.period}</p>
+                  </li>
+                ))}
+              </ol>
+
+              <ul className="mt-8 space-y-3">
+                {experience.points.map((p) => (
+                  <li key={p} className="flex gap-3 text-muted">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 border-t border-white/10 pt-6">
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-gold">Day-to-day stack</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {experience.stack.map((s) => (
+                    <span key={s} className="chip">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Tilt>
+          </div>
+
+          {/* Products worked on */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            {products.map((p, i) => (
+              <div key={p.name} data-reveal style={{ transitionDelay: `${i * 90}ms` }} className={p.highlight ? 'sm:col-span-2' : ''}>
+                <Tilt className={`card h-full p-6 ${p.highlight ? 'card-highlight' : ''}`}>
+                  <div style={{ transform: 'translateZ(25px)' }}>
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h4 className="font-display text-xl font-semibold text-white">{p.name}</h4>
+                      {p.highlight && <span className="pill pill-accent">~90% of backend</span>}
+                    </div>
+                    <p className="mt-1 text-sm text-gold/90">{p.kind}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted">{p.body}</p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {p.tags.map((t) => (
+                        <span key={t} className="pill pill-sm">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </Tilt>
+              </div>
             ))}
+
+            {/* Other products: full width */}
+            <div data-reveal className="sm:col-span-2">
+              <Tilt className="card h-full p-6" max={5}>
+                <div style={{ transform: 'translateZ(25px)' }}>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h4 className="font-display text-xl font-semibold text-white">Other products</h4>
+                    <span className="font-mono text-xs text-muted">Laravel · MySQL</span>
+                  </div>
+                  <p className="mt-1 text-sm text-gold/90">Built at SAER for the company and its clients</p>
+                  <ul className="mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+                    {otherProducts.map((o) => (
+                      <li key={o.name} className="flex gap-3">
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-aqua" />
+                        <div>
+                          <p className="text-sm font-medium text-white">{o.name}</p>
+                          <p className="text-sm text-muted">{o.body}</p>
+                        </div>
+                      </li>
+                    ))}
+                    <li className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                      <p className="text-sm font-medium text-gold">+ many more client projects</p>
+                    </li>
+                  </ul>
+                </div>
+              </Tilt>
+            </div>
           </div>
         </div>
       </div>

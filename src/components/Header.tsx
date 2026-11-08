@@ -1,87 +1,105 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { profile } from '../data';
+
+const nav = [
+  { name: 'About', href: '#about' },
+  { name: 'Ventures', href: '#ventures' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Writing', href: '#blog' },
+  { name: 'Contact', href: '#contact' },
+];
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('');
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((en) => en.isIntersecting && setActive('#' + en.target.id)),
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    document.querySelectorAll('section[id]').forEach((s) => io.observe(s));
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      io.disconnect();
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
-    }
-  };
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-[#7B542F] shadow-xl py-4' : 'bg-[#7B542F] py-6'
-      }`}
-    >
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <a href="#home" className="text-2xl text-[#FFCF71] hover:text-[#FF9D00] transition-colors">
-            NKV
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? 'py-3' : 'py-5'}`}>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div
+          className={`flex items-center justify-between rounded-2xl px-4 py-2.5 transition-all duration-300 ${
+            scrolled || open ? 'glass shadow-2xl shadow-black/40' : ''
+          }`}
+        >
+          <a href="#home" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
+            <span className="logo-cube" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            <span className="font-display text-lg font-semibold tracking-tight text-white">
+              NKV<span className="text-gold">.</span>
+            </span>
           </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+            {nav.map((n) => (
               <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className="text-white/90 hover:text-white relative group transition-colors"
+                key={n.href}
+                href={n.href}
+                className={`rounded-lg px-3 py-2 text-sm transition-colors ${
+                  active === n.href ? 'text-white' : 'text-muted hover:text-white'
+                }`}
               >
-                {item.name}
-                <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-[#FF9D00] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                {n.name}
+                <span
+                  className={`mx-auto mt-0.5 block h-px bg-gold transition-all duration-300 ${active === n.href ? 'w-full' : 'w-0'}`}
+                />
               </a>
             ))}
+            <a href={profile.resume} download="Nitin-Kumar-Vasdhani-Resume.pdf" className="btn-primary ml-3 !px-4 !py-2 text-sm">
+              Resume
+            </a>
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-white p-2"
+            className="rounded-lg p-2 text-white md:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            {open ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <nav className="md:hidden mt-6 pb-4 space-y-4 border-t border-white/20 pt-4">
-            {navItems.map((item) => (
+        {open && (
+          <nav className="glass mt-2 rounded-2xl p-3 md:hidden" aria-label="Mobile">
+            {nav.map((n) => (
               <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-all"
+                key={n.href}
+                href={n.href}
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-4 py-3 text-muted hover:bg-white/5 hover:text-white"
               >
-                {item.name}
+                {n.name}
               </a>
             ))}
+            <a
+              href={profile.resume}
+              download="Nitin-Kumar-Vasdhani-Resume.pdf"
+              className="btn-primary mt-2 w-full justify-center"
+            >
+              Download resume
+            </a>
           </nav>
         )}
       </div>

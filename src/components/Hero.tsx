@@ -1,84 +1,67 @@
-import { Github, Linkedin, Mail, Download, FolderGit2 } from 'lucide-react';
+import { ArrowDown, Download, Github, Linkedin, Mail } from 'lucide-react';
+import { profile } from '../data';
 
 export default function Hero() {
   return (
-    <section id="home" className="relative bg-gradient-to-br from-[#7B542F] to-[#B6771D] text-white min-h-screen flex items-center">
-      <div className="container mx-auto px-6 py-20">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          {/* Text Content */}
-          <div className="flex-1 space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-5xl lg:text-7xl text-white">
-                Nitin Kumar Vasdhani
-              </h1>
-              <h2 className="text-2xl lg:text-3xl text-[#FFCF71]">
-                Backend Developer & Software Engineer
-              </h2>
-              <p className="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
-                Results-driven Software Engineer specializing in Node.js, Laravel, MySQL & MongoDB. Passionate about scalable backend systems and performance optimization.
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
-              <a
-                href="/n-k-v-resume.pdf"   // 🔥 yaha apna actual resume path daalo
-                download="Nitin-Kumar-Vasdhani-Resume.pdf"
-                className="bg-[#FF9D00] hover:bg-[#FF9D00]/90 text-white px-8 py-4 rounded-full flex items-center gap-2 transition-all hover:scale-105 shadow-lg"
-              >
-                <Download size={20} />
-                Download Resume
-              </a>
-              <a href="#projects" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-full flex items-center gap-2 transition-all hover:scale-105 border border-white/30">
-                <FolderGit2 size={20} />
-                View Projects
-              </a>
-            </div>
-
-            {/* Social Links */}
-            <div className="flex gap-4">
-              <a 
-                href="https://www.linkedin.com/in/nitin-kumar-vasdhani/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-3 rounded-full transition-all hover:scale-110"
-              >
-                <Linkedin size={24} />
-              </a>
-              <a 
-                href="https://github.com/nitinvasdhani123" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-3 rounded-full transition-all hover:scale-110"
-              >
-                <Github size={24} />
-              </a>
-              <a 
-                href="mailto:nitinkumarvasdhani786@gmail.com"
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-3 rounded-full transition-all hover:scale-110"
-              >
-                <Mail size={24} />
-              </a>
-            </div>
+    <section id="home" className="relative flex min-h-[100svh] items-end pb-16 pt-[46svh] lg:items-center lg:pb-0 lg:pt-24">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <div className="max-w-2xl">
+          <div className="hero-in mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-muted backdrop-blur" style={{ animationDelay: '0.1s' }}>
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            Open to roles · Immediate joiner · Open to relocation
           </div>
 
-          {/* Photo Placeholder */}
-          <div className="flex-shrink-0">
-            <div className="w-64 h-64 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-[#FFCF71] to-[#FF9D00] p-2 shadow-2xl">
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-[#B6771D] to-[#7B542F] flex items-center justify-center">
-                <span className="text-8xl lg:text-9xl text-[#FFCF71]">NK</span>
-              </div>
+          <h1 className="hero-in font-display text-[2.6rem] font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl" style={{ animationDelay: '0.2s' }}>
+            Nitin Kumar
+            <br />
+            <span className="text-gradient">Vasdhani</span>
+          </h1>
+
+          <p className="hero-in mt-5 font-mono text-sm text-gold sm:text-base" style={{ animationDelay: '0.3s' }}>
+            {'>'} {profile.role} · {profile.stack}
+          </p>
+
+          <p className="hero-in mt-5 max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: '0.4s' }}>
+            I build the backend of SaaS products: schemas, APIs, access control and reports, and I make slow queries fast.
+            Founder of{' '}
+            <a href="https://autoflowmatrix.com" target="_blank" rel="noopener noreferrer" className="link">
+              AutoFlowMatrix
+            </a>
+            , the company behind Suite and EaseMyBlogs.
+          </p>
+
+          <div className="hero-in mt-8 flex flex-wrap items-center gap-3" style={{ animationDelay: '0.5s' }}>
+            <a href={profile.resume} download="Nitin-Kumar-Vasdhani-Resume.pdf" className="btn-primary">
+              <Download size={18} /> Download resume
+            </a>
+            <a href="#ventures" className="btn-ghost">
+              See my work
+            </a>
+            <div className="ml-1 flex gap-2">
+              <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="LinkedIn">
+                <Linkedin size={18} />
+              </a>
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label="GitHub">
+                <Github size={18} />
+              </a>
+              <a href={`mailto:${profile.email}`} className="icon-btn" aria-label="Email">
+                <Mail size={18} />
+              </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z" fill="white"/>
-        </svg>
-      </div>
+      <a
+        href="#about"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted hover:text-white lg:flex"
+      >
+        Scroll
+        <ArrowDown size={16} className="animate-bounce" />
+      </a>
     </section>
   );
 }

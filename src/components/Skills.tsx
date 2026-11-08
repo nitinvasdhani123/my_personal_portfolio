@@ -1,77 +1,34 @@
-import { Code, Server, Layout, Database, Wrench, Brain } from 'lucide-react';
+import { skills } from '../data';
+import Tilt, { SectionHeading } from './Tilt';
 
 export default function Skills() {
-  const skillCategories = [
-    {
-      icon: Code,
-      title: 'Programming',
-      skills: ['JavaScript', 'C++'],
-    },
-    {
-      icon: Server,
-      title: 'Frameworks',
-      skills: ['Node.js', 'Express.js', 'Laravel'],
-    },
-    {
-      icon: Layout,
-      title: 'Frontend',
-      skills: ['HTML', 'CSS', 'Bootstrap', 'jQuery'],
-    },
-    {
-      icon: Database,
-      title: 'Databases',
-      skills: ['MySQL'],
-    },
-    {
-      icon: Wrench,
-      title: 'Tools',
-      skills: ['Git', 'Github', 'VS Code', 'Postman'],
-    },
-    {
-      icon: Brain,
-      title: 'Other',
-      skills: ['DSA', 'Problem-solving'],
-    },
-  ];
-
   return (
-    <section id="skills" className="py-24 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl text-[#7B542F] mb-4">Skills & Expertise</h2>
-          <div className="w-24 h-1 bg-[#FF9D00] mx-auto rounded-full"></div>
-          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            A comprehensive toolkit for building robust backend systems and modern web applications
-          </p>
-        </div>
+    <section id="skills" className="section">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading kicker="04 / Skills" title="The toolkit" sub="What I use every day to design, build and debug backends." />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {skillCategories.map((category, index) => {
-            const Icon = category.icon;
-            return (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-[#FFCF71]/30 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2"
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="bg-[#FF9D00] p-3 rounded-xl">
-                    <Icon size={28} className="text-white" />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {skills.map((s, i) => (
+            <div
+              key={s.group}
+              data-reveal
+              style={{ transitionDelay: `${(i % 3) * 80}ms` }}
+              className={s.group === 'Laravel & Backend' || s.group === 'CS Fundamentals' ? 'lg:col-span-2' : ''}
+            >
+              <Tilt className="card h-full p-6">
+                <div style={{ transform: 'translateZ(25px)' }}>
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-gold">{s.group}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {s.items.map((it) => (
+                      <span key={it} className="chip">
+                        {it}
+                      </span>
+                    ))}
                   </div>
-                  <h3 className="text-2xl text-[#7B542F]">{category.title}</h3>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill, skillIndex) => (
-                    <span
-                      key={skillIndex}
-                      className="bg-[#FF9D00] text-white px-4 py-2 rounded-full text-sm hover:bg-[#FF9D00]/90 transition-colors cursor-default"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+              </Tilt>
+            </div>
+          ))}
         </div>
       </div>
     </section>

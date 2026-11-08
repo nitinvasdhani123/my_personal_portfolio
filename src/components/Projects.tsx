@@ -1,87 +1,94 @@
-import { ExternalLink, Github } from 'lucide-react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { ArrowUpRight, Check, Sparkles } from 'lucide-react';
+import { company, ventures } from '../data';
+import Tilt, { SectionHeading } from './Tilt';
 
 export default function Projects() {
-  const projects = [
-    {
-      title: 'EaseMyBlogs',
-      description: 'A full-featured blogging platform built with Laravel, featuring user authentication, CRUD operations, and a rich text editor for creating engaging blog content.',
-      tech: ['Laravel', 'MySQL', 'Bootstrap'],
-      image: 'blogging platform',
-      link: 'https://easemyblogs.com/',   // ✅ Added
-    },
-    {
-      title: 'Real-Time Chat App',
-      description: 'MERN stack application with WebSocket integration for instant messaging. Features include real-time notifications, typing indicators, and message history.',
-      tech: ['MongoDB', 'Express', 'React', 'Node.js'],
-      image: 'chat application',
-      link: 'https://github.com/nitinvasdhani123/Chatify',  // ✅ Added
-    }
-  ];
-
   return (
-    <section id="projects" className="py-24 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl text-[#7B542F] mb-4">Featured Projects</h2>
-          <div className="w-24 h-1 bg-[#FF9D00] mx-auto rounded-full"></div>
-          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            A showcase of my recent work in backend development and full-stack applications
-          </p>
-        </div>
+    <section id="ventures" className="section">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          kicker="02 / Ventures"
+          title="What I founded"
+          sub="AutoFlowMatrix is my company. These are the products we've built and run, from the database up."
+        />
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              className="bg-gradient-to-br from-[#FFCF71]/20 to-white rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 overflow-hidden group"
-            >
-
-              {/* Project Content */}
-              <div className="p-6 space-y-4">
-                <h3 className="text-2xl text-[#7B542F]">{project.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{project.description}</p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className="bg-[#B6771D]/10 text-[#7B542F] px-3 py-1 rounded-full text-sm"
-                    >
-                      {tech}
+        {/* Company card */}
+        <div data-reveal>
+          <Tilt className="card card-highlight p-7 sm:p-9" max={4}>
+            <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center" style={{ transform: 'translateZ(30px)' }}>
+              <div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="icon-tile">
+                    <Sparkles size={22} />
+                  </div>
+                  <h3 className="font-display text-3xl font-semibold text-white sm:text-4xl">{company.name}</h3>
+                  <span className="pill pill-accent">{company.role}</span>
+                </div>
+                <p className="mt-4 font-display text-xl text-gradient">{company.tagline}</p>
+                <p className="mt-3 leading-relaxed text-muted">{company.description}</p>
+                <a href={company.url} target="_blank" rel="noopener noreferrer" className="btn-primary mt-6">
+                  Visit {company.host} <ArrowUpRight size={16} />
+                </a>
+              </div>
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.18em] text-gold">What we build</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {company.services.map((s) => (
+                    <span key={s} className="chip">
+                      {s}
                     </span>
                   ))}
                 </div>
+              </div>
+            </div>
+          </Tilt>
+        </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-4">
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 bg-[#FF9D00] hover:bg-[#FF9D00]/90 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105"
-                  >
-                    <ExternalLink size={18} />
-                    View Project
+        <p className="mb-6 mt-14 font-mono text-xs uppercase tracking-[0.18em] text-muted" data-reveal>
+          Products
+        </p>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          {ventures.map((v, i) => (
+            <div key={v.name} data-reveal style={{ transitionDelay: `${i * 120}ms` }}>
+              <Tilt className={`card venture venture-${v.accent} flex h-full flex-col p-6`} max={7}>
+                <div className="browser" style={{ transform: 'translateZ(50px)' }}>
+                  <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                    <span className="ml-2 truncate rounded-md bg-white/5 px-2 py-0.5 font-mono text-[11px] text-muted">{v.host}</span>
+                  </div>
+                  <div className="browser-body">
+                    <span className="font-display text-2xl font-semibold text-white">{v.name}</span>
+                    <span className="mt-1 text-sm text-muted">{v.tagline}</span>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-1 flex-col" style={{ transform: 'translateZ(25px)' }}>
+                  <p className="leading-relaxed text-muted">{v.description}</p>
+                  <ul className="mt-5 space-y-2">
+                    {v.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-sm text-white/85">
+                        <Check size={15} className="shrink-0 text-gold" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-5 flex flex-wrap gap-1.5">
+                    {v.tech.map((t) => (
+                      <span key={t} className="pill pill-sm">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <a href={v.url} target="_blank" rel="noopener noreferrer" className="btn-ghost mt-6 self-start">
+                    Visit {v.name} <ArrowUpRight size={16} />
                   </a>
                 </div>
-              </div>
+              </Tilt>
             </div>
           ))}
         </div>
-          
-          {/* View All */}
-        <div className="text-center mt-12">
-          <a
-            href="https://github.com/nitinvasdhani123?tab=repositories"
-            target="_blank"
-            className="bg-[#7B542F] hover:bg-[#7B542F]/90 text-white px-8 py-4 rounded-full transition-all hover:scale-105 shadow-lg"
-          >
-            View All Projects
-          </a>
-        </div>
-
       </div>
     </section>
   );

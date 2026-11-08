@@ -1,10 +1,48 @@
 
-  import { defineConfig } from 'vite';
+  import { defineConfig, loadEnv, type Plugin } from 'vite';
   import react from '@vitejs/plugin-react-swc';
+  import tailwindcss from '@tailwindcss/vite';
   import path from 'path';
 
-  export default defineConfig({
-    plugins: [react()],
+  // Dev only: serve POST /api/contact locally with the same code Vercel runs in production.
+  function contactApiDev(): Plugin {
+    return {
+      name: 'contact-api-dev',
+      configureServer(server) {
+        server.middlewares.use('/api/contact', async (req, res) => {
+          res.setHeader('Content-Type', 'application/json');
+          if (req.method !== 'POST') {
+            res.statusCode = 405;
+            res.end(JSON.stringify({ ok: false, error: 'Method not allowed' }));
+            return;
+          }
+          let raw = '';
+          for await (const chunk of req) raw += chunk;
+          let body: unknown = {};
+          try {
+            body = JSON.parse(raw || '{}');
+          } catch {
+            /* invalid JSON -> validation error below */
+          }
+          const { sendEnquiry } = await server.ssrLoadModule('/server/sendEnquiry.ts');
+          const result = await sendEnquiry(body);
+          res.statusCode = result.status;
+          res.end(JSON.stringify(result.body));
+        });
+      },
+    };
+  }
+
+  export default defineConfig(({ mode }) => {
+    // make SMTP_* / CONTACT_* from .env.local available to the dev API route.
+    // Clear what we set last time first, otherwise loadEnv keeps the old process.env value on restart.
+    const g = globalThis as { __contactEnvKeys?: string[] };
+    for (const k of g.__contactEnvKeys ?? []) delete process.env[k];
+    const contactEnv = loadEnv(mode, process.cwd(), ['SMTP_', 'CONTACT_']);
+    Object.assign(process.env, contactEnv);
+    g.__contactEnvKeys = Object.keys(contactEnv);
+    return {
+    plugins: [react(), tailwindcss(), contactApiDev()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
@@ -57,4 +95,5 @@
       port: 3000,
       open: true,
     },
+  };
   });
